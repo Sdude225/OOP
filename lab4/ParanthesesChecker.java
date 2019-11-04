@@ -8,7 +8,7 @@ public class ParanthesesChecker {
     public List<String> lines = new ArrayList<String>();
 
     public ParanthesesChecker(String Text){
-        temp = Text.split("(\\r?\\n)+");
+        temp = Text.split("([\\r?\\n]+)([\\r?\\n' ']+)");
         for(int i = 0; i < temp.length; i++){
             lines.add(temp[i]);
             }
