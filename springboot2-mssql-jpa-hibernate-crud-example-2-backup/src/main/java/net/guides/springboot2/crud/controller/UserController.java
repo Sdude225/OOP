@@ -11,14 +11,7 @@ import net.guides.springboot2.crud.model.User;
 import net.guides.springboot2.crud.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -30,6 +23,15 @@ public class UserController {
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @PostMapping("/users/login")
+    public User login(@RequestBody User user){
+        User usertemp = userRepository.findByPassword(user.getPassword());
+        if(usertemp.getUsername().equals(user.getUsername())){
+            return usertemp;
+        }
+        return null;
     }
 
     @GetMapping("/users/{id}")
@@ -55,8 +57,9 @@ public class UserController {
         user.setLastName(userDetails.getLastName());
         user.setFirstName(userDetails.getFirstName());
         user.setUsername(userDetails.getUsername());
-        final User updatedEmployee = userRepository.save(user);
-        return ResponseEntity.ok(updatedEmployee);
+        user.setPassword(userDetails.getPassword());
+        final User updatedUser = userRepository.save(user);
+        return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/users/{id}")
