@@ -27,11 +27,12 @@ public class UserController {
 
     @PostMapping("/users/login")
     public User login(@RequestBody User user){
-        User usertemp = userRepository.findByPassword(user.getPassword());
-        if(usertemp.getUsername().equals(user.getUsername())){
+        User usertemp = userRepository.findByUsername(user.getUsername());
+        if(usertemp.getPassword().equals(user.getPassword()) && usertemp.getUsername().equals(user.getUsername())){
             return usertemp;
+        } else {
+            return null;
         }
-        return null;
     }
 
     @GetMapping("/users/{id}")
